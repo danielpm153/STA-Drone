@@ -1,0 +1,5 @@
+command
+takeoff
+jump 0 0 50 50 yaw 1 6
+delay 7
+land
