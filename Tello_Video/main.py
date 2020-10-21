@@ -31,8 +31,20 @@ class Interface:
 
         self.socket.sendto('command'.encode('utf-8'), tello_adderss)
         self.dados()
+    def str2dict(self, out):
+        dictionnaire = {}
+        for i in out:
+            aux = i.split(':')
+            dictionnaire[aux[0]] = aux[1]
+        return dictionnaire
+
     def dados(self):
-        pass
+        try:
+            self.response, self.ip = self.socket.recvfrom(1024)
+            if self.response == "ok":
+                self.root.after(100, self.dados)
+            else:
+                self.out = self.response.split(';')
 
 
 
