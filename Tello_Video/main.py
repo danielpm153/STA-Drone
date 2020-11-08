@@ -4,7 +4,7 @@ from tello_control_ui import TelloUI
 import threading
 import Tkinter as tk
 #import curses
-from time import sleep
+#from time import sleep
 import socket
 
 INTERVAL = 0.001
@@ -16,16 +16,12 @@ class Interface:
         self.root.wm_title("Data Drone")
         self.text = str(self.tello.response)
 
-        self.label_aux1 = tk.Label(self.root)
-        self.label_aux1.pack(side="bottom", fill="both",
-                             expand="yes", padx=10, pady=5)
-        self.label_aux2 = tk.Label(self.root, text=self.text)
-        self.label_aux2.pack(side="bottom", fill="both",
-                             expand="yes", padx=10, pady=5)
-        self.label_aux3 = tk.Label(self.root, text=self.text)
-        self.label_aux3.pack(side="bottom", fill="both",
-                             expand="yes", padx=10, pady=5)
+        self.list_capt = ['mid', 'x', 'y', 'z', 'mpry', 'pitch', 'roll', 'yaw', 'vgx', 'vgy', 'vgz', 'templ', 'temph', 'tof', 'h', 'bat', 'baro', 'time', 'agx', 'agy', 'agz']
 
+        self.list_label = []
+        for i in range(21):
+            self.list_label.append(tk.Label(self.root))
+            self.list_label[i].pack()
         #communitation
         #self.stdscr = curses.initscr()
         #curses.noecho()
@@ -64,9 +60,8 @@ class Interface:
             else:
                 self.out = self.response.split(';')
                 self.out_dict = self.str2dict(self.out)
-                self.label_aux1["text"] = 'agx =' + self.out_dict['agx']
-                self.label_aux2["text"] = 'agy =' + self.out_dict['agy']
-                self.label_aux3["text"] = 'agz =' + self.out_dict['agz']
+                for i in range(21):
+                    self.list_label[i]["text"] = self.list_capt[i] + "=" + self.out_dict[self.list_capt[i]]
                 self.root.after(100, self.dados)
         except KeyboardInterrupt:
             pass
@@ -85,9 +80,9 @@ def main():
     vplayer = TelloUI(drone,"./img/")
 
     root_interface = Interface(drone)
-    
-	# start the Tkinter mainloop
+    # start the Tkinter mainloop
     root_thread = threading.Thread(target=loop(vplayer))
+
     root_thread.daemon = True
     root_thread.start()
 
