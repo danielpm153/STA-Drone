@@ -112,7 +112,7 @@ def loop(vplayer):
 def main():
 
     drone = tello.Tello('', 8889)  
-    vplayer = TelloUI(drone,"./img/")
+    vplayer = TelloUI(drone,"./img/")b
 
     root_interface = Interface(drone, vplayer.openCmdWindow)
     # start the Tkinter mainloop

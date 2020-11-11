@@ -104,6 +104,7 @@ class Tello:
                 if len(res_string) != 1460:
                     for frame in self._h264_decode(packet_data):
                         self.frame = frame
+                        print(frame)
                     packet_data = ""
 
             except socket.error as exc:
