@@ -3,25 +3,60 @@ from tello_control_ui import TelloUI
 
 import threading
 import Tkinter as tk
+#from Tkinter import Toplevel, Scale
 #import curses
 #from time import sleep
 import socket
 
+from PIL import Image
+from PIL import ImageTk
+
 INTERVAL = 0.001
 
 class Interface:
-    def __init__(self, tello):
+    def __init__(self, tello, controle):
         self.tello = tello
-        self.root = tk.Tk()
+        self.root = tk.Toplevel()
         self.root.wm_title("Data Drone")
         self.text = str(self.tello.response)
+        self.root.geometry("700x500")
+        self.controle = controle
+        #self.root.configure(bg = "yellow")
 
         self.list_capt = ['mid', 'x', 'y', 'z', 'mpry', 'pitch', 'roll', 'yaw', 'vgx', 'vgy', 'vgz', 'templ', 'temph', 'tof', 'h', 'bat', 'baro', 'time', 'agx', 'agy', 'agz']
 
         self.list_label = []
         for i in range(21):
             self.list_label.append(tk.Label(self.root))
-            self.list_label[i].pack()
+            self.list_label[i].grid()
+        self.imagem = ImageTk.PhotoImage(Image.open("Drone.png"))
+        FILENAME = "Drone.png"
+        self.canvas = tk.Canvas(self.root, bg="blue", height=400, width=500)
+        self.canvas.place(x = 100,y = 0)
+        self.tk_img = ImageTk.PhotoImage(file=FILENAME)
+        self.canvas.create_image(200, 300, image=self.tk_img)
+        self.control_button = tk.Button(self.root, text="Control", command=self.controle, anchor="w",
+                                width=10, activebackground="#33B5E5")
+        self.quit_button_window = self.canvas.create_window(200, 360, anchor="nw", window=self.control_button)
+
+        self.control_script = tk.Button(self.root, width= 10, text = "Script")
+        self.control_script.place(x = 300, y=320)
+        #self.control_script = tk.Button(self.root, text="Script", achor="w", width=10, activebackground="#33B5E5")
+        #self.controle_button_window = self.canvas.create_window(200, 340, anchor="nw", window=self.control_script)
+
+        #self.canvas.create_image((0,0), image = imagem)
+
+        #self.aux = tk.Label(self.root, image=imagem)
+        #self.aux.image = imagem
+        #self.aux.pack(side="left", padx=10, pady=10)
+        #self.canvas = tk.Canvas(self.root, bg="blue", height=250, width=300)
+
+        #self.canvas.create_image(0, 0, image = image_)
+        #self.canvas.pack()
+        #background_image = tk.PhotoImage(file = "Drone.png")
+        #background_label = tk.Label(self.root, image=background_image)
+        #background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
         #communitation
         #self.stdscr = curses.initscr()
         #curses.noecho()
@@ -77,9 +112,9 @@ def loop(vplayer):
 def main():
 
     drone = tello.Tello('', 8889)  
-    vplayer = TelloUI(drone,"./img/")
+    vplayer = TelloUI(drone,"./img/")b
 
-    root_interface = Interface(drone)
+    root_interface = Interface(drone, vplayer.openCmdWindow)
     # start the Tkinter mainloop
     root_thread = threading.Thread(target=loop(vplayer))
 
