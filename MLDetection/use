@@ -1,0 +1,3 @@
+Regardez le document detect.py dans le dossier demo, il y a une fonction pour traiter des image. Les parametres sont le path d'image et le neurons (Deja defini). 
+
+Installer opencv et pytorch
