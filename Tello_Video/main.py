@@ -1,11 +1,11 @@
-#import tello
+from tello_py3 import Tello
 #from tello_control_ui import TelloUI
 
 import threading
 from tkinter import *
 # from Tkinter import Toplevel, Scale
 # import curses
-# from time import sleep
+from time import sleep
 
 #connection######
 import socket
@@ -27,7 +27,7 @@ IP_SERVER = "192.168.0.124"
 #IP_SERVER = "127.0.0.1"
 PORT = 6000
 
-my_username = "Ordinateur1"
+my_username = "Ordinateur:1;"
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((IP_SERVER, PORT))
 client_socket.setblocking(False)
@@ -167,9 +167,30 @@ class supervision:
             else:
                 try:
                     self.message = receive_message()
-                    self.command(self.response.decode("utf-8"))
+                    self.command(my_username+self.response.decode("utf-8"))
                     #self.command("ola")
                     print(self.message)
+                    if self.message=="drone1drone2":
+                        os.system("python2 tello_test.py")
+                    if self.message=="drone1":
+                        if my_username == "Ordinateur:1;":
+                            os.system("python2 tello_test.py")
+                    if self.message=="drone2":
+                        if my_username == "Ordinateur:2;":
+                            os.system("python2 tello_test.py")
+
+                    if "mid" in self.message:
+                        self.out_dict2 = self.str2dict(self.message.split(";"))
+                        print(self.out_dict2)
+                        self.labelX2["text"] = "x :" + self.out_dict2["x"]
+                        self.labelY2["text"] = "y :" + self.out_dict2["y"]
+                        self.labelAltitude2["text"] = "z :" + self.out_dict2["z"]
+                        self.labelVgx2["text"] = "Agx :" + self.out_dict2["agx"]
+                        self.labelVgy2["text"] = "Agy :" + self.out_dict2["agy"]
+                        self.labelVgz2["text"] = "Agz :" + self.out_dict2["agz"]
+                        self.labelMid2["text"] = "Mid :" + self.out_dict2["mid"]
+                        self.labelBat2["text"] = "Batterie :" + self.out_dict2['bat']
+
                 except:
                     pass
                 self.out = self.response.decode("latin-1").split(';')
@@ -186,6 +207,52 @@ class supervision:
                 self.root.after(1000, self.donnees)
         except KeyboardInterrupt:
             pass
+        '''
+        try:
+            self.response, self.ip = self.socket.recvfrom(1024)
+            if self.response.decode("latin-1") == "ok":
+                self.root.after(1000, self.donnees())
+            else:
+                try:
+                    self.message = receive_message()
+                    self.command(my_username+";"+self.response.decode("utf-8"))
+                    #self.command("ola")
+                    print(self.message)
+                    #self.out = self.response.decode("latin-1").split(';')
+                    self.out_dict1 = self.str2dict(self.response.decode("latin-1").split(';'))
+                    # print(self.out_dict)
+                    if self.out_dict1["Ordinateur"] == "1":
+                        self.labelX1["text"] = "x :" + self.out_dict["x"]
+                        self.labelY1["text"] = "y :" + self.out_dict["y"]
+                        self.labelAltitude1["text"] = "z :" + self.out_dict["z"]
+                        self.labelVgx1["text"] = "Agx :" + self.out_dict["agx"]
+                        self.labelVgy1["text"] = "Agy :" + self.out_dict["agy"]
+                        self.labelVgz1["text"] = "Agz :" + self.out_dict["agz"]
+                        self.labelMid1["text"] = "Mid :" + self.out_dict["mid"]
+                        self.labelBat1["text"] = "Batterie :" + self.out_dict['bat']
+
+
+                except:
+                    pass
+                try:
+                    self.out_dict2 = self.str2dict(self.message.split(";"))
+                    if self.out_dict2["Ordinateur"] == "2":
+                        self.labelX2["text"] = "x :" + self.out_dict["x"]
+                        self.labelY2["text"] = "y :" + self.out_dict["y"]
+                        self.labelAltitude2["text"] = "z :" + self.out_dict["z"]
+                        self.labelVgx2["text"] = "Agx :" + self.out_dict["agx"]
+                        self.labelVgy2["text"] = "Agy :" + self.out_dict["agy"]
+                        self.labelVgz2["text"] = "Agz :" + self.out_dict["agz"]
+                        self.labelMid2["text"] = "Mid :" + self.out_dict["mid"]
+                        self.labelBat2["text"] = "Batterie :" + self.out_dict['bat']
+                except:
+                    pass
+
+
+                self.root.after(1000, self.donnees)
+        except KeyboardInterrupt:
+            pass
+        '''
 
 
 
@@ -202,7 +269,8 @@ class Interface:
         self.window.config(background='white')
 
         #self.supervision = supervision()
-
+        #command tello
+        #self.tellopy3 = Tello()
 
         # Creation de l'image pour fond d'ecran
 
@@ -214,7 +282,7 @@ class Interface:
         # Acceder a la vraie interface graphique de supervision
         self.btn1 = Button(self.window, text="Supervision des Drones", fg='#336699', command=1)
         # Arreter les drones
-        self.btn5 = Button(self.window, text="Arreter tous les drones", fg='#336699')
+        self.btn5 = Button(self.window, text="Arreter tous les drones", fg='#336699', command = self.arreter)
         # Quitter la fenetre
         self.btn6 = Button(self.window, text="Fermer l'Interface", fg='#336699', command=self.destruction)
 
@@ -232,15 +300,15 @@ class Interface:
         self.control_button2.place(x=445, y=300, width=200, height=50)
 
         # Lancer les deux drones
-        self.control_script = Button(self.window, width=10, text="Demarrer les deux Drones", fg='#336699')
+        self.control_script = Button(self.window, width=10, text="Demarrer les deux Drones", fg='#336699', command=self.command)
         self.control_script.place(x=80, y=110, width=300, height=50)
 
         # Lancer la trajectoire du Drone 1
-        self.control_script1 = Button(self.window, width=10, text="Demarrer Drone numero 1", fg='#336699')
+        self.control_script1 = Button(self.window, width=10, text="Demarrer Drone numero 1", fg='#336699', command=self.command_drone1)
         self.control_script1.place(x=80, y=180, width=300, height=50)
 
         # Lancer la trajectoire du Drone 2
-        self.control_script2 = Button(self.window, width=10, text="Demarrer Drone numero 2", fg='#336699')
+        self.control_script2 = Button(self.window, width=10, text="Demarrer Drone numero 2", fg='#336699', command=self.command_drone2)
         self.control_script2.place(x=80, y=250, width=300, height=50)
         # connexion avec le socket
         '''
@@ -256,6 +324,21 @@ class Interface:
         self.socket.sendto('command'.encode('utf-8'), tello_adderss)
         '''
         #self.window.mainloop()
+    def command(self):
+        msg = "drone1drone2"
+        client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
+        os.system("python2 tello_test.py")
+        print(msg)
+    def arreter(self):
+        msg = "arreter1arreter2"
+        client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
+        #self.tellopy3.send_command("land")
+    def command_drone1(self):
+        if username=="Ordinateur:1;":
+            os.system("python2 tello_test.py")
+    def command_drone2(self):
+        if username=="Ordinateur:2;":
+            os.system("python2 tello_test.py")
 
     def open(self):
         global imageSeconde
