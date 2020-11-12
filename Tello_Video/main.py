@@ -334,10 +334,14 @@ class Interface:
         client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
         #self.tellopy3.send_command("land")
     def command_drone1(self):
-        if username=="Ordinateur:1;":
+        msg = "drone1"
+        client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
+        if my_username=="Ordinateur:1;":
             os.system("python2 tello_test.py")
     def command_drone2(self):
-        if username=="Ordinateur:2;":
+        msg = "drone2"
+        client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
+        if my_username=="Ordinateur:2;":
             os.system("python2 tello_test.py")
 
     def open(self):
