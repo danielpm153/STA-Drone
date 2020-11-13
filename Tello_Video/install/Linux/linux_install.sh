@@ -37,7 +37,7 @@ cd build
 cmake ..
 make
 
-# copy source .so file to tello.py directory
+# copy source .so file to tello_.py directory
 cp libh264decoder.so ../../
 
 echo 'Compilation and Installation Done!'
