@@ -1,4 +1,4 @@
-from tello_py3 import Tello
+#from tello_py3 import Tello
 #from tello_control_ui import TelloUI
 
 import threading
@@ -24,8 +24,8 @@ INTERVAL = 0.001
 
 HEADER_LENGTH = 1024
 
-#IP_SERVER = "192.168.0.124"
-IP_SERVER = "127.0.0.1"
+IP_SERVER = "192.168.0.124"
+#IP_SERVER = "127.0.0.1"
 PORT = 6000
 
 my_username = "Ordinateur:1;"
@@ -174,16 +174,16 @@ class supervision:
                     #self.command("ola")
                     print(self.message)
                     if self.message=="drone1drone2":
-                        os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-                        #os.system("python2 tello_test.py")
+                        #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+                        os.system("python2 tello_test.py")
                     if self.message=="drone1":
                         if my_username == "Ordinateur:1;":
-                            os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-                            #os.system("python2 tello_test.py")
+                            #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+                            os.system("python2 tello_test.py")
                     if self.message=="drone2":
                         if my_username == "Ordinateur:2;":
-                            os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-                            #os.system("python2 tello_test.py")
+                            #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+                            os.system("python2 tello_test.py")
 
                     if "mid" in self.message:
                         self.out_dict2 = self.str2dict(self.message.split(";"))
@@ -334,8 +334,9 @@ class Interface:
     def command(self):
         msg = "drone1drone2"
         client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
-        os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-        #os.system("python2 tello_test.py")
+        #os.system("gnome-terminal -x sh \"python2 tello_state.py\"")
+        #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+        os.system("python2 tello_test.py")
         print(msg)
     def arreter(self):
         msg = "arreter1arreter2"
@@ -345,14 +346,14 @@ class Interface:
         msg = "drone1"
         client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
         if my_username=="Ordinateur:1;":
-            os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-            #os.system("python2 tello_test.py")
+            #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+            os.system("python2 tello_test.py")
     def command_drone2(self):
         msg = "drone2"
         client_socket.send(f"{len(msg):<{HEADER_LENGTH}}".encode("utf-8") + msg.encode("utf-8"))
         if my_username=="Ordinateur:2;":
-            os.system("gnome-terminal -x sh -c \"!!; python2 tello_state.py\"")
-            #os.system("python2 tello_test.py")
+            #os.system("gnome-terminal -x sh -c \"python2 tello_state.py\"")
+            os.system("python2 tello_test.py")
 
     def open(self):
         global imageSeconde
