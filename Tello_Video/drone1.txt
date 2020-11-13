@@ -1,5 +1,4 @@
 command
-delay 3
 takeoff
 delay 3
 up 40
