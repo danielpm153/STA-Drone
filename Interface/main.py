@@ -21,7 +21,7 @@ canvas.pack(expand = YES)
 
 window.title("interface graphique pour les drones")
 window.geometry("720x480")
-window.iconbitmap("logo.ico")
+
 window.config(background = 'white')
 
 # Creation de l'image pour fond d'ecran
@@ -56,30 +56,96 @@ def open():
     image2 = PhotoImage(file = "SupervisionDrones.png").zoom(35).subsample(32)
     background_label = Label(top, image=image2)
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
     buttonQuit = Button(top, text = "Fermer la fenetre Supervision des Drones", fg = '#336699', command = top.destroy)
     buttonQuit.pack()
-    labelAltitude1 = Label(top, text = "Altitude : " + "infos") #Drone 1
-    labelAltitude1.place(x = 50, y = 100, width = 100, height = 30)
-    labelAltitude2 = Label(top, text="Altitude : " + "infos")  # Drone 2
-    labelAltitude2.place(x=310, y=100, width=100, height=30)
-    labelAltitude3 = Label(top, text="Altitude : " + "infos")  # Drone 3
-    labelAltitude3.place(x=570, y=100, width=100, height=30)
-    labelEnVol1 = Label(top, text="En Vol : " + "Oui")  # Drone 1
-    labelEnVol1.place(x=50, y=150, width=100, height=30)
-    labelEnVol2 = Label(top, text="En Vol : " + "Non")  # Drone 2
-    labelEnVol2.place(x=310, y=150, width=100, height=30)
-    labelEnVol3 = Label(top, text="En Vol : " + "Oui")  # Drone 3
-    labelEnVol3.place(x=570, y=150, width=100, height=30)
+
+    labelAltitude1 = Label(top, text = "Altitude : " + "infos")     # Drone 1
+    labelAltitude1.place(x = 40, y = 220, width = 100, height = 30)
+    labelX1 = Label(top, text="x : " + "34")
+    labelX1.place(x=40, y=120, width=100, height=30)
+    labelY1 = Label(top, text="7 : " + "56")
+    labelY1.place(x=40, y=170, width=100, height=30)
+    labelMid1 = Label(top, text="Mid : " + "1")
+    labelMid1.place(x=270, y=120, width=100, height=30)
+    labelVgx1 = Label(top, text="Vgx : " + "56")
+    labelVgx1.place(x=155, y=120, width=100, height=30)
+    labelVgy1 = Label(top, text="Vgy : " + "2")
+    labelVgy1.place(x=155, y=170, width=100, height=30)
+    labelVgz1 = Label(top, text="Vgz : " + "12")
+    labelVgz1.place(x=155, y=220, width=100, height=30)
+    labelBat1 = Label(top, text="Batterie : " + "7")
+    labelBat1.place(x=270, y=170, width=100, height=30)
+    labelTime1 = Label(top, text="Temps : " + "76")
+    labelTime1.place(x=270, y=220, width=100, height=30)
+
+    labelObstacle1Presence = Label(top, text="Obstacle : " + "Oui", fg='red')  # Supervision Obstacle
+    labelObstacle1Presence.place(x=130, y=270, width=150, height=40)
+    labelCoordonnees1 = Label(top, text="Coordonnees : " + "87 " + "32 " + "78", fg='red')
+    labelCoordonnees1.place(x=105, y=330, width=200, height=40)
+    labelMidObstacle1 = Label(top, text="Mid Obstacle : " + "2", fg='red')
+    labelMidObstacle1.place(x=130, y=390, width=150, height=40)
+
+
+    labelAltitude2 = Label(top, text="Altitude : " + "infos")   # Drone 2
+    labelAltitude2.place(x=430, y=220, width=100, height=30)
+    labelX2 = Label(top, text="x : " + "23")
+    labelX2.place(x=430, y=120, width=100, height=30)
+    labelY2 = Label(top, text="y : " + "11")
+    labelY2.place(x=430, y=170, width=100, height=30)
+    labelMid2 = Label(top, text="Mid : " + "1")
+    labelMid2.place(x=660, y=120, width=100, height=30)
+    labelVgx2 = Label(top, text="Vgx : " + "56")
+    labelVgx2.place(x=545, y=120, width=100, height=30)
+    labelVgy2 = Label(top, text="Vgy : " + "2")
+    labelVgy2.place(x=545, y=170, width=100, height=30)
+    labelVgz2 = Label(top, text="Vgz : " + "12")
+    labelVgz2.place(x=545, y=220, width=100, height=30)
+    labelBat2 = Label(top, text="Batterie : " + "7")
+    labelBat2.place(x=660, y=170, width=100, height=30)
+    labelTime2 = Label(top, text="Temps : " + "76")
+    labelTime2.place(x=660, y=220, width=100, height=30)
+
+    labelObstacle2Presence = Label(top, text="Obstacle : " + "Oui", fg='red')  # Supervision Obstacle
+    labelObstacle2Presence.place(x=520, y=270, width=150, height=40)
+    labelCoordonnees2 = Label(top, text="Coordonnees : " + "76 " + "45 " + "06", fg='red')
+    labelCoordonnees2.place(x=495, y=330, width=200, height=40)
+    labelMidObstacle2 = Label(top, text="Mid Obstacle : " + "4", fg='red')
+    labelMidObstacle2.place(x=520, y=390, width=150, height=40)
+
 
 
 
 # Rajout des boutons
+
 # Acceder a la vraie interface graphique de supervision
-btn1 = Button(window, text = "Supervision des Drones", fg = '#336699', command = open)
-# Lancer le drone
-btn2 = Button(window, text = "Demarrer les Drones", fg = '#336699')
+btn1 = Button(window, text="Supervision des Drones", fg='#336699', command=open)
+# Lancer les deux drones
+btn2 = Button(window, text="Demarrer les deux Drones", fg='#336699')
+# Lancer le drone 1
+btn3 = Button(window, text="Demarrer Drone numero 1", fg='#336699')
+# Lancer le drone 2
+btn4 = Button(window, text="Demarrer Drone numero 2", fg='#336699')
+# Arreter les drones
+btn5 = Button(window, text="Arreter tous les drones", fg='#336699')
 # Quitter la fenetre
-btn3 = Button(window, text = "Fermer l'Interface", fg = '#336699', command = destruction)
+btn6 = Button(window, text="Fermer l'Interface", fg='#336699', command=destruction)
+
+# Commander le drone numero 1
+btn7 = Button(window, text="Commander Drone 1", fg='#336699')
+# Commander le drone numero 2
+btn8 = Button(window, text="Commander Drone 2", fg='#336699')
+
+# On positionne ces boutons
+
+btn1.place(x=80, y=40, width=300, height=50)
+btn2.place(x=80, y=110, width=300, height=50)
+btn3.place(x=80, y=180, width=300, height=50)
+btn4.place(x=80, y=250, width=300, height=50)
+btn5.place(x=80, y=320, width=300, height=50)
+btn6.place(x=80, y=390, width=300, height=50)
+btn7.place(x=445, y=220, width=200, height=50)
+btn8.place(x=445, y=300, width=200, height=50)
 
 # On positionne ces boutons
 """"
@@ -87,10 +153,6 @@ btn1.pack(fill=X, ipady=15, padx=200,pady=40)
 btn2.pack(fill=X, ipady=15, padx=200,pady=40)
 btn3.pack(fill=X, ipady=15, padx=200,pady=40)
 """
-btn1.place(x = 100, y=100, width = 300, height = 50)
-btn2.place(x = 100, y=200, width = 300, height = 50)
-btn3.place(x = 100, y=300, width = 300, height = 50)
 
 # Afficher la fenetre
 window.mainloop()
-
